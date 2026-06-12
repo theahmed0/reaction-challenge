@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحدي رد الفعل السريع 150</title>
 
-    <!-- 1️⃣ [اختياري] ضع هنا كود التحقق للموقع أو الإعلانات التلقائية إذا طلبت منك المنصة وضعه داخل الـ <head> -->
-    <!-- مثال: <script type="text/javascript" src="//www.highperformanceformat.com/..."></script> -->
-
     <style>
         :root {
             --bg-color: #080c14;
@@ -164,8 +161,6 @@
             align-items: center;
             justify-content: center;
             border: 1px dashed #2d3748;
-            font-size: 11px;
-            color: #4a5568;
             border-radius: 8px;
             overflow: hidden;
         }
@@ -197,10 +192,18 @@
             <button class="control-btn btn-retry" id="retryBtn" onclick="resetAndRetry()" style="visibility: hidden;">إعادة المحاولة 🔄</button>
         </div>
 
-        <!-- 2️⃣ [هنا مكان إعلان البانر الثابت أسفل اللعبة مقاس 320x50] -->
+        <!-- مساحة إعلان البانر مدمج بها رقم الـ ID الخاص بك تلقائياً -->
         <div class="ad-container">
-            <!-- امسح السطر البرمجي التوضيحي بالأسفل وضع مكانه كود الـ Banner الممنوح لك من Adsterra -->
-            <script type="text/javascript">5843008</script>
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : 'bd2c1df58fa4cfdf3e8e2cbf58430008',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 320,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/bd2c1df58fa4cfdf3e8e2cbf58430008/invoke.js"></script>
         </div>
 
     </div>
@@ -273,9 +276,6 @@
                 
                 if (accuracy > 40) saveHighScore(accuracy);
             }
-
-            // 3️⃣ [هنا] إذا اخترت استخدام إعلان منبثق (Popunder)، يفضل استدعاؤه برمجياً هنا
-            // لحظة ضغط زر "إيقاف الآن" وانتهاء الجولة هي الأنسب لإظهار النوافذ الإعلانية دون إزعاج عملية التركيز بالعد.
         }
 
         function resetAndRetry() {
