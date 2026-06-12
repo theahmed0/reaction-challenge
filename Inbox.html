@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي رد الفعل السريع 150</title>
+
+    <!-- 1️⃣ [اختياري] ضع هنا كود التحقق للموقع أو الإعلانات التلقائية إذا طلبت منك المنصة وضعه داخل الـ <head> -->
+    <!-- مثال: <script type="text/javascript" src="//www.highperformanceformat.com/..."></script> -->
+
+    <style>
+        :root {
+            --bg-color: #080c14;
+            --panel-bg: #111827;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 95vh;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .game-panel {
+            width: 100%;
+            max-width: 400px;
+            background: var(--panel-bg);
+            padding: 30px 20px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            border: 1px solid #1f2937;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .screen.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-top: 0;
+            background: linear-gradient(45deg, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
+            margin-top: 30px;
+            transition: transform 0.1s;
+        }
+        .start-btn:active { transform: scale(0.95); }
+
+        .high-score-badge {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .info-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .target-display {
+            font-size: 72px;
+            font-weight: 900;
+            color: #f59e0b;
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+            margin: 5px 0 25px 0;
+        }
+
+        .counter-display {
+            font-size: 56px;
+            font-weight: 800;
+            font-family: monospace;
+            color: var(--text-main);
+            margin: 10px 0;
+        }
+
+        .control-btn {
+            width: 100%;
+            height: 60px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: all 0.1s ease;
+        }
+
+        .btn-stop {
+            background: linear-gradient(135deg, var(--accent-red), #dc2626);
+            color: white;
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+            margin-bottom: 12px;
+        }
+        .btn-stop:active { transform: scale(0.98); opacity: 0.9; }
+
+        .btn-retry {
+            background: #374151;
+            color: #e5e7eb;
+            border: 1px solid #4b5563;
+        }
+        .btn-retry:hover { background: #4b5563; }
+        .btn-retry:active { transform: scale(0.98); }
+
+        .result-box {
+            min-height: 50px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .ad-container {
+            width: 100%;
+            min-height: 50px;
+            background: #0b0f17;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #2d3748;
+            font-size: 11px;
+            color: #4a5568;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-panel">
+        
+        <div id="startScreen" class="screen active">
+            <h1>رادار رد الفعل</h1>
+            <p style="color: var(--text-muted); font-size: 14px; padding: 0 10px;">إختبار توقيت فائق السرعة. هل يمكنك تجميد العداد عند الرقم المستهدف تماماً؟</p>
+            <button class="start-btn" onclick="switchScreen('gameScreen', startPlaying)">START</button>
+            <br>
+            <div class="high-score-badge" id="highScoreText">أعلى دقة: 0%</div>
+        </div>
+
+        <div id="gameScreen" class="screen">
+            <div class="info-label">الرقم المطلوب</div>
+            <div class="target-display" id="targetNum">0</div>
+            
+            <div class="info-label">العداد السريع</div>
+            <div class="counter-display" id="liveCounter">0</div>
+
+            <div class="result-box" id="resultMsg"></div>
+
+            <button class="control-btn btn-stop" id="stopBtn" onclick="stopCounter()">إيقاف الآن! 🛑</button>
+            
+            <button class="control-btn btn-retry" id="retryBtn" onclick="resetAndRetry()" style="visibility: hidden;">إعادة المحاولة 🔄</button>
+        </div>
+
+        <!-- 2️⃣ [هنا مكان إعلان البانر الثابت أسفل اللعبة مقاس 320x50] -->
+        <div class="ad-container">
+            <!-- امسح السطر البرمجي التوضيحي بالأسفل وضع مكانه كود الـ Banner الممنوح لك من Adsterra -->
+            <script type="text/javascript"> /* كود إعلان البانر يوضع هنا */ </script>
+        </div>
+
+    </div>
+
+    <script>
+        let targetNumber = 0;
+        let currentCount = 0;
+        let counterInterval = null;
+        let isPlaying = false;
+        const tickSpeed = 14;
+
+        window.onload = function() {
+            displayHighScore();
+        };
+
+        function switchScreen(screenId, callback) {
+            const activeScreen = document.querySelector('.screen.active');
+            activeScreen.classList.remove('active');
+            
+            setTimeout(() => {
+                const nextScreen = document.getElementById(screenId);
+                nextScreen.classList.add('active');
+                if (callback) callback();
+            }, 150);
+        }
+
+        function startPlaying() {
+            isPlaying = true;
+            currentCount = 0;
+            document.getElementById('liveCounter').textContent = '0';
+            document.getElementById('resultMsg').textContent = '';
+            document.getElementById('stopBtn').disabled = false;
+            document.getElementById('stopBtn').style.opacity = '1';
+            document.getElementById('retryBtn').style.visibility = 'hidden';
+
+            targetNumber = Math.floor(Math.random() * 151);
+            document.getElementById('targetNum').textContent = targetNumber;
+
+            clearInterval(counterInterval);
+            counterInterval = setInterval(() => {
+                currentCount++;
+                if (currentCount > 150) {
+                    currentCount = 0;
+                }
+                document.getElementById('liveCounter').textContent = currentCount;
+            }, tickSpeed);
+        }
+
+        function stopCounter() {
+            if (!isPlaying) return;
+            isPlaying = false;
+            clearInterval(counterInterval);
+
+            document.getElementById('stopBtn').disabled = true;
+            document.getElementById('stopBtn').style.opacity = '0.4';
+            document.getElementById('retryBtn').style.visibility = 'visible';
+
+            const resultMsg = document.getElementById('resultMsg');
+            
+            if (currentCount === targetNumber) {
+                resultMsg.textContent = "🎯 أسطوري! تطابق كامل ودقة 100%!";
+                resultMsg.style.color = "var(--accent-green)";
+                saveHighScore(100);
+            } else {
+                let diff = Math.abs(currentCount - targetNumber);
+                let accuracy = Math.max(0, 100 - (diff * 2));
+                
+                resultMsg.innerHTML = `توقفت عند: <span style="color:#f59e0b">${currentCount}</span><br>الدقة المحققة: ${accuracy}%`;
+                resultMsg.style.color = accuracy > 85 ? "var(--accent-green)" : "#f87171";
+                
+                if (accuracy > 40) saveHighScore(accuracy);
+            }
+
+            // 3️⃣ [هنا] إذا اخترت استخدام إعلان منبثق (Popunder)، يفضل استدعاؤه برمجياً هنا
+            // لحظة ضغط زر "إيقاف الآن" وانتهاء الجولة هي الأنسب لإظهار النوافذ الإعلانية دون إزعاج عملية التركيز بالعد.
+        }
+
+        function resetAndRetry() {
+            startPlaying();
+        }
+
+        function saveHighScore(score) {
+            let currentBest = parseInt(localStorage.getItem('speedGameHighScore')) || 0;
+            if (score > currentBest) {
+                localStorage.setItem('speedGameHighScore', score);
+            }
+            displayHighScore();
+        }
+
+        function displayHighScore() {
+            let currentBest = parseInt(localStorage.getItem('speedGameHighScore')) || 0;
+            document.getElementById('highScoreText').textContent = `أعلى دقة: ${currentBest}%`;
+        }
+    </script>
+</body>
+</html>
